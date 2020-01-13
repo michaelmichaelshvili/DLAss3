@@ -77,3 +77,6 @@ def load_product_title_search_term_lists(window_size):
     search_term_list = pkl.load(open(f'search_term_list_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
 
+prepare_network_input_X('train',dict,5)
+prepare_network_input_X('train',dict,10)
+prepare_network_input_X('train',dict,20)
