@@ -4,7 +4,7 @@ import numpy as np
 import os
 import pickle as pkl
 
-path_dir = r'C:\Users\micha\Desktop'
+path_dir = r'C:\Users\Odedblu\Desktop'
 
 
 def make_cahe_dictionaty():
@@ -72,11 +72,8 @@ def prepare_network_input_X(train_or_test, char_dictionary, window_size):
     pkl.dump(search_term_list, open(f'search_term_list_window{window_size}.pkl', 'wb'))
 
 
-def load_product_title_search_term_lists(window_size):
-    product_title_list = pkl.load(open(f'product_title_list_window{window_size}.pkl', 'rb'))
+def load_product_title_search_term_lists(train_or_test, window_size):
+    product_title_list = pkl.load(open(f'{train_or_test}_product_title_list_window{window_size}.pkl', 'rb'))
     search_term_list = pkl.load(open(f'search_term_list_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
 
-prepare_network_input_X('train',dict,5)
-prepare_network_input_X('train',dict,10)
-prepare_network_input_X('train',dict,20)
