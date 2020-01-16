@@ -11,7 +11,6 @@ window_size = 20
 
 product_title_input, search_term_input = load_product_title_search_term_lists('train', window_size)
 train_labels = pd.read_csv(r"C:\Users\odedblu\Desktop\train.csv", encoding="ISO-8859-1")['relevance']
-train_labels = train_labels
 
 x_product_train = product_title_input[:59000]
 x_search_train = search_term_input[:59000]
