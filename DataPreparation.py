@@ -5,7 +5,7 @@ import os
 import pickle as pkl
 from sklearn.feature_extraction.text import CountVectorizer
 
-path_dir = r'C:\Users\micha\Desktop'
+path_dir = r'C:\Users\Odedblu\Desktop'
 
 
 def make_cahe_dictionaty():
@@ -80,19 +80,16 @@ def load_product_title_search_term_lists(train_or_test, window_size):
 
 def prepere_X_data():
     train_df = pd.read_csv(os.path.join(path_dir, 'train.csv'), encoding="ISO-8859-1")
-    # test_df = pd.read_csv(os.path.join(path_dir, 'test.csv'), encoding="ISO-8859-1")
+    test_df = pd.read_csv(os.path.join(path_dir, 'test.csv'), encoding="ISO-8859-1")
     corpus = []
     for idx,row in train_df.iterrows():
         product_title = row['product_title']
         search_term = row['search_term']
         corpus.append(str(product_title + search_term))
 
-    # for idx,row in test_df.iterrows():
-    #     product_title = row['product_title']
-    #     search_term = row['search_term']
-    #     corpus.append(str(product_title + search_term))
     count_vectoraizer = CountVectorizer()
     vectorizer_output = count_vectoraizer.fit_transform(corpus)
-    vectorizer_output = vectorizer_output.toarray()
+    vectorizer_output_arr = vectorizer_output.toarray()
 
-    return vectorizer_output
+    return vectorizer_output_arr
+
