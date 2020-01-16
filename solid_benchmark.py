@@ -15,6 +15,7 @@ X_train, x_val = train[:59000], train[59000:]
 y_train, y_val = train_labels[:59000], train_labels[59000:]
 
 rfr = RandomForestRegressor(n_estimators=15, max_depth=30, min_samples_split=25, random_state=123,n_jobs=-1)
+rfr.fit(X_train, y_train)
 
 val_pred = rfr.predict(X_train)
 print(f'Validation score (rmse): {np.sqrt(mean_squared_error(val_pred,y_train))}')

@@ -1,6 +1,6 @@
 from keras.models import Model, Sequential
 from keras.layers import LSTM, Dense, Input, Lambda
-from DataPreparation import load_product_title_search_term_lists
+from DataPreparation import load_product_title_search_term_lists_words
 import pandas as pd
 import keras.backend as K
 from keras.callbacks import ModelCheckpoint
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 window_size = 20
 
-product_title_input, search_term_input = load_product_title_search_term_lists('train', window_size)
+product_title_input, search_term_input = load_product_title_search_term_lists_words('train', window_size)
 train_labels = pd.read_csv(r"C:\Users\micha\Desktop\train.csv", encoding="ISO-8859-1")['relevance']
 
 x_product_train = product_title_input[:59000]
