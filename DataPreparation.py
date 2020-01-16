@@ -154,10 +154,13 @@ def prepare_network_input_X_ngram(train_or_test, window_size):
         product_title_list.append(product_title_array)
         search_term_array = str_to_array_of_ngrams(search_term, word_dictionary, window_size)
         search_term_list.append(search_term_array)
-    pkl.dump(product_title_list, open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'wb'))
-    pkl.dump(search_term_list, open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'wb'))
+    pkl.dump(np.array(product_title_list), open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'wb'))
+    pkl.dump(np.array(search_term_list), open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'wb'))
 
 def load_product_title_search_term_lists_words(train_or_test, window_size):
     product_title_list = pkl.load(open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'rb'))
-    search_term_list = pkl.load(open(f'{train_or_test}search_term_list_word_window{window_size}.pkl', 'rb'))
+    search_term_list = pkl.load(open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
+
+
+# prepare_network_input_X_ngram('train', 20)
