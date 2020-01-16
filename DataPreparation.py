@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import os
 import pickle as pkl
+from sklearn.feature_extraction.text import CountVectorizer
 
 path_dir = r'C:\Users\Odedblu\Desktop'
 
@@ -32,7 +33,7 @@ def load_char_dictionary():
 
 
 # make_cahe_dictionaty()
-dict = load_char_dictionary()
+# dict = load_char_dictionary()
 
 
 def str_to_array_of_array(string, char_dictionary, window_size):
@@ -77,3 +78,23 @@ def load_product_title_search_term_lists(train_or_test, window_size):
     search_term_list = pkl.load(open(f'search_term_list_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
 
+def prepere_X_data():
+    train_df = pd.read_csv(os.path.join(path_dir, 'train.csv'), encoding="ISO-8859-1")
+    test_df = pd.read_csv(os.path.join(path_dir, 'test.csv'), encoding="ISO-8859-1")
+    corpus = []
+    for idx,row in train_df.iterrows():
+        product_title = row['product_title']
+        search_term = row['search_term']
+        corpus.append(str(product_title + search_term))
+
+    for idx,row in test_df.iterrows():
+        product_title = row['product_title']
+        search_term = row['search_term']
+        corpus.append(str(product_title + search_term))
+    count_vectoraizer = CountVectorizer()
+    vectorizer_output = count_vectoraizer.fit_transform(corpus)
+    vectorizer_output_arr = vectorizer_output.toarray()
+
+    return [vectorizer_output_arr[:train_df.shape[0]],vectorizer_output_arr[train_df.shape[0]:]]
+
+prepere_X_data()
