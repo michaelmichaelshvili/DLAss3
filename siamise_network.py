@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 window_size = 20
 
 product_title_input, search_term_input = load_product_title_search_term_lists('train', window_size)
-train_labels = pd.read_csv(r"C:\Users\micha\Desktop\train.csv", encoding="ISO-8859-1")['relevance']
+train_labels = pd.read_csv(r"C:\Users\odedblu\Desktop\train.csv", encoding="ISO-8859-1")['relevance']
 
 x_product_train = product_title_input[:59000]
 x_search_train = search_term_input[:59000]
@@ -41,8 +41,9 @@ siamise_model = Model(inputs=[input_product, input_query], output=prediction)
 model.compile(optimizer='adam', loss='mse')
 siamise_model.compile(optimizer='adam', loss='mse')
 print(siamise_model.summary())
-# mcp = ModelCheckpoint('model.h5',monitor='val_loss',verbose=1, save_best_only=True)
-# history = siamise_model.fit([x_product_train,x_search_train],y_train,validation_data=([x_product_val,x_search_val], y_val), batch_size=512, epochs=20, callbacks=[mcp])
+mcp = ModelCheckpoint('char_lvl_model.h5',monitor='val_loss',verbose=1, save_best_only=True)
+history = siamise_model.fit([x_product_train,x_search_train],y_train,validation_data=([x_product_val,x_search_val], y_val), batch_size=512, epochs=20, callbacks=[mcp])
+
 # # summarize history for loss
 # plt.plot(history.history['loss'])
 # plt.plot(history.history['val_loss'])

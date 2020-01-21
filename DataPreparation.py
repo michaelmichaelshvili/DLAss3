@@ -5,7 +5,7 @@ import os
 import pickle as pkl
 from sklearn.feature_extraction.text import CountVectorizer
 
-path_dir = r'C:\Users\micha\Desktop'
+path_dir = r'C:\Users\odedblu\Desktop'
 
 
 def make_cahe_dictionaty():
@@ -33,7 +33,6 @@ def load_char_dictionary():
 
 
 # make_cahe_dictionaty()
-# dict = load_char_dictionary()
 
 
 def str_to_array_of_array(string, char_dictionary, window_size):
@@ -70,13 +69,18 @@ def prepare_network_input_X(train_or_test, char_dictionary, window_size):
         search_term_array = str_to_array_of_array(search_term, char_dictionary, window_size)
         search_term_list.append(search_term_array)
     pkl.dump(product_title_list, open(f'{train_or_test}_product_title_list_window{window_size}.pkl', 'wb'))
-    pkl.dump(search_term_list, open(f'search_term_list_window{window_size}.pkl', 'wb'))
+    pkl.dump(search_term_list, open(f'{train_or_test}_search_term_list_window{window_size}.pkl', 'wb'))
 
+# dict = load_char_dictionary()
+# prepare_network_input_X('train', dict, 20)
 
 def load_product_title_search_term_lists(train_or_test, window_size):
     product_title_list = pkl.load(open(f'{train_or_test}_product_title_list_window{window_size}.pkl', 'rb'))
-    search_term_list = pkl.load(open(f'search_term_list_window{window_size}.pkl', 'rb'))
+    search_term_list = pkl.load(open(f'{train_or_test}_search_term_list_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
+
+
+
 
 def prepere_X_data():
     train_df = pd.read_csv(os.path.join(path_dir, 'train.csv'), encoding="ISO-8859-1")
@@ -96,6 +100,7 @@ def prepere_X_data():
     for i in range (0,len(vectorizer_output),2):
         vectorizer_output_arr.append(np.concatenate((vectorizer_output[i],vectorizer_output[i+1]),axis=None))
     return vectorizer_output_arr
+
 
 def prepere_X_data_ngram3():
     train_df = pd.read_csv(os.path.join(path_dir, 'train.csv'), encoding="ISO-8859-1")
@@ -119,11 +124,11 @@ def prepere_X_data_ngram3():
 
 def str_to_array_of_ngrams(string, word_dictionary, window_size):
     string = ' '.join(string.split())
-    string = list(string.lower())
-    res = []
-    for i in range(0,len(string)-2):
-        gram = word_dictionary[''.join(string[i:i+3])]
-        res.append(gram)
+    # string = list(string.lower())
+    res = string.split(' ')
+    # for i in range(0,len(string)-2):
+    #     gram = ''.join(string[i:i+3])
+    #     res.append(gram)
     # string = string.reshape((len(string), 1))
     if window_size < len(res):
         res = res[:window_size]
@@ -131,10 +136,10 @@ def str_to_array_of_ngrams(string, word_dictionary, window_size):
         res = res
         pass
     else:
-        zevel = [0] * (window_size - len(word_dictionary))
+        zevel = ['0'] * (window_size - len(res))
         zevel.extend(res)
         res = zevel
-    res = np.array(res).reshape((len(res), 1))
+    # res = np.array(res).reshape((len(res), 1))
     return res
 
 def prepare_network_input_X_ngram(train_or_test, window_size):
@@ -154,13 +159,12 @@ def prepare_network_input_X_ngram(train_or_test, window_size):
         product_title_list.append(product_title_array)
         search_term_array = str_to_array_of_ngrams(search_term, word_dictionary, window_size)
         search_term_list.append(search_term_array)
-    pkl.dump(np.array(product_title_list), open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'wb'))
-    pkl.dump(np.array(search_term_list), open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'wb'))
+    pkl.dump(product_title_list, open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'wb'))
+    pkl.dump(search_term_list, open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'wb'))
 
 def load_product_title_search_term_lists_words(train_or_test, window_size):
     product_title_list = pkl.load(open(f'{train_or_test}_product_title_list_word_window{window_size}.pkl', 'rb'))
     search_term_list = pkl.load(open(f'{train_or_test}_search_term_list_word_window{window_size}.pkl', 'rb'))
     return product_title_list, search_term_list
 
-
-# prepare_network_input_X_ngram('train', 20)
+# prepare_network_input_X_ngram('test', 20)
